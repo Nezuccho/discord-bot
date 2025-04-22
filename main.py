@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 import logging
+import random
+import time
 
 # อ่าน Token
 file = open("token.txt","r")
@@ -35,6 +37,7 @@ async def on_message(message) : #ดักรอข้อความใน Chat
 #     if message.content.startswith('/ping') : #เมื่อข้อความในตัวแรกมีคำว่า ping
 #        await message.channel.send('Pong... ฉันควรตอบอย่างงี้ใช่ไหมนะ...?') #ข้อความที่ต้องการตอบกลับ
 
+# command
 @bot.command() # ใส่เพื่อประกาศ command
 async def ping(ctx):
     await ctx.send('Pong... ฉันควรตอบอย่างงี้ใช่ไหมนะ...?')
@@ -52,8 +55,24 @@ async def clear(ctx,limit = 1): # ลบข้อความ
     await ctx.channel.purge(limit=limit)
 
 @bot.command()
-async def add(ctx,a:float,b:float):
+async def add(ctx,a:float,b:float): # บวกเลขเฉยๆ
     await ctx.send(a + b)
-       
+
+@bot.command()
+async def dice(ctx,amount:int = 1): # ทอยเต๋า 6 หน้า ระบุจำนวนลูกเต๋าได้
+    dice_list = []
+    await ctx.send("ทอยเต๋า! :game_die:")
+    if amount > 1:
+        for i in range(amount):
+            dice = random.randint(1,6)
+            dice_list.append(dice)
+            await ctx.send(f'ลูกเต๋าที่ {i+1} ด้านที่ออก: {dice}')
+        time.sleep(1)
+        await ctx.send(f'รวม: {sum(dice_list)}')
+    else:
+        dice = random.randint(1,6)
+        time.sleep(1)
+        await ctx.send(f'ด้านที่ออก: {dice}')
+           
 bot.run(token, log_handler=handler, log_level=logging.DEBUG) #รันบอท (โดยนำ TOKEN จากบอทที่เราสร้างไว้นำมาวาง)
 
