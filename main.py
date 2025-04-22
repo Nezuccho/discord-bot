@@ -17,7 +17,8 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='/',intents=intents) #กำหนด Prefix
+activity = discord.CustomActivity(name="คงจะทำเสร็จสักวันล่ะมั้งนะ....") # set activity status ใต้ชื่อ
+bot = commands.Bot(command_prefix='/',intents=intents,activity=activity) #กำหนด Prefix
 
 @bot.event
 async def on_ready() : #เมื่อระบบพร้อมใช้งาน
@@ -44,7 +45,7 @@ async def ping(ctx):
     
 @bot.command()
 async def hello(ctx):
-    await ctx.send(f'อ่า สวัสดี ยินดีที่ได้รู้จักนะ! {ctx.author.display_name}!')
+    await ctx.send(f'อ่า สวัสดี ยินดีที่ได้รู้จักนะ! {ctx.author.mention}!')
 
 @bot.command()
 async def echo(ctx,*,message): # ส่งข้อความตามที่ส่งไป
