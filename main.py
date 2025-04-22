@@ -6,7 +6,7 @@ import logging
 file = open("token.txt","r")
 token = file.read()
 file.close()
-#-------------- Note CTRL + K + C เพื่อ comment selection
+#-------------- Note: CTRL + K + C เพื่อ comment selection
 
 #logging
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
