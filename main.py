@@ -3,11 +3,13 @@ from discord.ext import commands
 import logging
 import random
 import time
+import os # สำหรับ env
+from dotenv import load_dotenv
 
 # อ่าน Token
-file = open("token.txt","r")
-token = file.read()
-file.close()
+load_dotenv() # load ตัวแปรจาก env
+token = os.getenv("Discord_token") # access env value
+
 #-------------- Note: CTRL + K + C เพื่อ comment selection
 
 #logging
@@ -17,7 +19,7 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 intents = discord.Intents.default()
 intents.message_content = True
 
-activity = discord.CustomActivity(name="คงจะทำเสร็จสักวันล่ะมั้งนะ....") # set activity status ใต้ชื่อ
+activity = discord.CustomActivity(name="คงจะทำเสร็จในสักวันล่ะมั้งนะ....") # set activity status ใต้ชื่อ
 bot = commands.Bot(command_prefix='/',intents=intents,activity=activity) #กำหนด Prefix
 
 @bot.event
@@ -52,7 +54,7 @@ async def echo(ctx,*,message): # ส่งข้อความตามที�
     await ctx.send(message)
 
 @bot.command()
-async def clear(ctx,limit = 1): # ลบข้อความ
+async def clear(ctx,limit = 3): # ลบข้อความ
     await ctx.channel.purge(limit=limit)
 
 @bot.command()
