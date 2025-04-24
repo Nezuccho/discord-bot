@@ -5,10 +5,15 @@ import random
 import time
 import os # สำหรับ env
 from dotenv import load_dotenv
+import requests
 
-# อ่าน Token
+# อ่าน Token และ ตัวแปรอื่นๆ
 load_dotenv() # load ตัวแปรจาก env
 token = os.getenv("Discord_token") # access env value
+openweather_token = os.getenv("OpenweatherAPI")
+lat = os.getenv("lat")
+lon = os.getenv("lon")
+
 
 #-------------- Note: CTRL + K + C เพื่อ comment selection
 
@@ -33,7 +38,7 @@ async def on_message(message) : #ดักรอข้อความใน Chat
         return
     
     await bot.process_commands(message) 
-    
+
 #     if message.content.startswith('/hello'):
 #         await message.channel.send(f'อ่า สวัสดี ยินดีที่ได้รู้จักนะ! {message.author.display_name}!')
         
@@ -76,6 +81,18 @@ async def dice(ctx,amount:int = 1): # ทอยเต๋า 6 หน้า ร�
         dice = random.randint(1,6)
         time.sleep(1)
         await ctx.send(f'ด้านที่ออก: {dice}')
-           
+
+@bot.command()
+async def weather(ctx): # !ยังไม่เสร็จ
+    # ดึงข้อมูลโดย fix สถานที่
+    url = "https://api.openweathermap.org/data/2.5/weather?"
+    url = url + (f'lat={lat}&lon={lon}&lang=th&units=metric&appid={openweather_token}') # เพิ่มตัวแปรเข้าไป
+    response = requests.get(url)
+    weather = response.json()
+
+    print(url)
+    print(weather)
+    await ctx.send("ดึงข้อมูลสภาพอากาศโดยใช้ OpenweatherAPI เรียบร้อย!")
+
 bot.run(token, log_handler=handler, log_level=logging.DEBUG) #รันบอท (โดยนำ TOKEN จากบอทที่เราสร้างไว้นำมาวาง)
 
